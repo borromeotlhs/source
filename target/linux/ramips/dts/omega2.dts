@@ -6,7 +6,7 @@
 
 / {
 	compatible = "onion,omega", "mediatek,mt7628an-soc";
-	model = "Onion Omega2+";
+	model = "Onion Omega2";
 
 	chosen {
 		bootargs = "console=ttyS0,115200";
@@ -14,7 +14,7 @@
 
 	memory@0 {
 		device_type = "memory";
-		reg = <0x0 0x8000000>;
+		reg = <0x0 0x4000000>;
 	};
 
 	gpio-leds {
@@ -165,11 +165,6 @@
 
 &ethernet {
 	mtd-mac-address = <&factory 0x28>;
-};
-
-&sdhci {
-	status = "okay";
-	mediatek,cd-low;
 };
 
 &wmac {

@@ -173,8 +173,9 @@ get_status_led() {
 	newifi-d1)
 		status_led="$board:blue:status"
 		;;
+	omega2|\
 	omega2p)
-		status_led="omega2p:amber:system"
+		status_led="omega2:amber:system"
 		;;
 	oy-0001|\
 	sl-r7205|\
