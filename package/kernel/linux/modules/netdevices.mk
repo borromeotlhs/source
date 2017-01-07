@@ -886,3 +886,35 @@ define KernelPackage/spi-ks8995/description
 endef
 
 $(eval $(call KernelPackage,spi-ks8995))
+
+
+define KernelPackage/ethoc
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  TITLE:=Opencore.org ethoc driver
+  DEPENDS:=+kmod-libphy
+  FILES:=$(LINUX_DIR)/drivers/net/ethernet/ethoc.ko
+  KCONFIG:=CONFIG_ETHOC
+  AUTOLOAD:=$(call AutoProbe,ethoc)
+endef
+
+define KernelPackage/ethoc/description
+  Kernel module for the Opencores.org ethernet adapter
+endef
+
+$(eval $(call KernelPackage,ethoc))
+
+
+define KernelPackage/bnx2
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  TITLE:=BCM5706/5708/5709/5716 ethernet adapter driver
+  DEPENDS:=@PCI_SUPPORT +bnx2-firmware
+  FILES:=$(LINUX_DIR)/drivers/net/ethernet/broadcom/bnx2.ko
+  KCONFIG:=CONFIG_BNX2
+  AUTOLOAD:=$(call AutoProbe,bnx2)
+endef
+
+define KernelPackage/bnx2/description
+  Kernel module for the BCM5706/5708/5709/5716 ethernet adapter
+endef
+
+$(eval $(call KernelPackage,bnx2))

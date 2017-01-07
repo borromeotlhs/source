@@ -394,7 +394,7 @@ $(eval $(call KernelPackage,crypto-des))
 
 define KernelPackage/crypto-deflate
   TITLE:=Deflate compression CryptoAPI module
-  DEPENDS:=+kmod-lib-zlib
+  DEPENDS:=+kmod-lib-zlib-inflate +kmod-lib-zlib-deflate
   KCONFIG:=CONFIG_CRYPTO_DEFLATE
   FILES:=$(LINUX_DIR)/crypto/deflate.ko
   AUTOLOAD:=$(call AutoLoad,09,deflate)
@@ -533,7 +533,8 @@ define KernelPackage/crypto-sha1
   DEPENDS:=+kmod-crypto-hash
   KCONFIG:= \
 	CONFIG_CRYPTO_SHA1 \
-	CONFIG_CRYPTO_SHA1_OCTEON
+	CONFIG_CRYPTO_SHA1_OCTEON \
+	CONFIG_CRYPTO_SHA1_SSSE3
   FILES:=$(LINUX_DIR)/crypto/sha1_generic.ko
   AUTOLOAD:=$(call AutoLoad,09,sha1_generic)
   $(call AddDepends/crypto)
@@ -544,6 +545,11 @@ define KernelPackage/crypto-sha1/octeon
   AUTOLOAD:=$(call AutoLoad,09,octeon-sha1)
 endef
 
+define KernelPackage/crypto-sha1/x86/64
+  FILES+=$(LINUX_DIR)/arch/x86/crypto/sha1-ssse3.ko
+  AUTOLOAD:=$(call AutoLoad,09,sha1-ssse3)
+endef
+
 $(eval $(call KernelPackage,crypto-sha1))
 
 
@@ -552,7 +558,8 @@ define KernelPackage/crypto-sha256
   DEPENDS:=+kmod-crypto-hash
   KCONFIG:= \
 	CONFIG_CRYPTO_SHA256 \
-	CONFIG_CRYPTO_SHA256_OCTEON
+	CONFIG_CRYPTO_SHA256_OCTEON \
+	CONFIG_CRYPTO_SHA256_SSSE3
   FILES:=$(LINUX_DIR)/crypto/sha256_generic.ko
   AUTOLOAD:=$(call AutoLoad,09,sha256_generic)
   $(call AddDepends/crypto)
@@ -563,6 +570,11 @@ define KernelPackage/crypto-sha256/octeon
   AUTOLOAD:=$(call AutoLoad,09,octeon-sha256)
 endef
 
+define KernelPackage/crypto-sha256/x86/64
+  FILES+=$(LINUX_DIR)/arch/x86/crypto/sha256-ssse3.ko
+  AUTOLOAD:=$(call AutoLoad,09,sha256-ssse3)
+endef
+
 $(eval $(call KernelPackage,crypto-sha256))
 
 
@@ -571,7 +583,8 @@ define KernelPackage/crypto-sha512
   DEPENDS:=+kmod-crypto-hash
   KCONFIG:= \
 	CONFIG_CRYPTO_SHA512 \
-	CONFIG_CRYPTO_SHA512_OCTEON
+	CONFIG_CRYPTO_SHA512_OCTEON \
+	CONFIG_CRYPTO_SHA512_SSSE3
   FILES:=$(LINUX_DIR)/crypto/sha512_generic.ko
   AUTOLOAD:=$(call AutoLoad,09,sha512_generic)
   $(call AddDepends/crypto)
@@ -580,6 +593,11 @@ endef
 define KernelPackage/crypto-sha512/octeon
   FILES+=$(LINUX_DIR)/arch/mips/cavium-octeon/crypto/octeon-sha512.ko
   AUTOLOAD:=$(call AutoLoad,09,octeon-sha512)
+endef
+
+define KernelPackage/crypto-sha512/x86/64
+  FILES+=$(LINUX_DIR)/arch/x86/crypto/sha512-ssse3.ko
+  AUTOLOAD:=$(call AutoLoad,09,sha512-ssse3)
 endef
 
 $(eval $(call KernelPackage,crypto-sha512))
@@ -661,15 +679,3 @@ define KernelPackage/crypto-xts
 endef
 
 $(eval $(call KernelPackage,crypto-xts))
-
-
-define KernelPackage/crypto-mv-cesa
-  TITLE:=Marvell crypto engine
-  DEPENDS:=+kmod-crypto-manager @TARGET_kirkwood||TARGET_orion
-  KCONFIG:=CONFIG_CRYPTO_DEV_MV_CESA
-  FILES:=$(LINUX_DIR)/drivers/crypto/mv_cesa.ko
-  AUTOLOAD:=$(call AutoLoad,09,mv_cesa)
-  $(call AddDepends/crypto)
-endef
-
-$(eval $(call KernelPackage,crypto-mv-cesa))
